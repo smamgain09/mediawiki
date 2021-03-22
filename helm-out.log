@@ -1,0 +1,712 @@
+NAME: mediawiks
+LAST DEPLOYED: Sun Mar 21 23:31:24 2021
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+USER-SUPPLIED VALUES:
+{}
+
+COMPUTED VALUES:
+affinity: {}
+allowEmptyPassword: "yes"
+args: []
+clusterDomain: cluster.local
+command: []
+common:
+  exampleValue: common-chart
+  global: {}
+commonAnnotations: {}
+commonLabels: {}
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1001
+customLivenessProbe: {}
+customReadinessProbe: {}
+externalDatabase:
+  database: bitnami_mediawiki
+  host: null
+  password: null
+  port: 3306
+  user: bn_mediawiki
+extraDeploy: []
+extraEnvVars: []
+extraEnvVarsCM: null
+extraEnvVarsSecret: null
+extraVolumeMounts: []
+extraVolumes: []
+hostAliases:
+- hostnames:
+  - status.localhost
+  ip: 127.0.0.1
+image:
+  pullPolicy: IfNotPresent
+  registry: docker.io
+  repository: bitnami/mediawiki
+  tag: 1.35.1-debian-10-r52
+ingress:
+  annotations: {}
+  apiVersion: null
+  certManager: false
+  enabled: false
+  hostname: mediawiki.local
+  path: /
+  pathType: ImplementationSpecific
+  secrets: []
+  tls: false
+initContainers: {}
+kubeVersion: null
+livenessProbe:
+  enabled: true
+  failureThreshold: 6
+  httpGet:
+    httpHeaders:
+    - name: Host
+      value: '{{ include "mediawiki.host" . }}'
+    path: /api.php?action=query&meta=siteinfo&format=none
+    port: http
+  initialDelaySeconds: 120
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+mariadb:
+  architecture: standalone
+  auth:
+    customPasswordFiles: {}
+    database: bitnami_mediawiki
+    forcePassword: false
+    password: ""
+    replicationPassword: ""
+    replicationUser: replicator
+    rootPassword: ""
+    usePasswordFiles: false
+    username: bn_mediawiki
+  clusterDomain: cluster.local
+  common:
+    exampleValue: common-chart
+    global: {}
+  commonAnnotations: {}
+  commonLabels: {}
+  enabled: true
+  extraDeploy: []
+  global: {}
+  image:
+    debug: false
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+    registry: docker.io
+    repository: bitnami/mariadb
+    tag: 10.5.8-debian-10-r69
+  initdbScripts: {}
+  metrics:
+    annotations:
+      prometheus.io/port: "9104"
+      prometheus.io/scrape: "true"
+    enabled: false
+    extraArgs:
+      primary: []
+      secondary: []
+    image:
+      pullPolicy: IfNotPresent
+      registry: docker.io
+      repository: bitnami/mysqld-exporter
+      tag: 0.12.1-debian-10-r343
+    livenessProbe:
+      enabled: true
+      failureThreshold: 3
+      initialDelaySeconds: 120
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    readinessProbe:
+      enabled: true
+      failureThreshold: 3
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources:
+      limits: {}
+      requests: {}
+    serviceMonitor:
+      additionalLabels: {}
+      enabled: false
+      honorLabels: false
+      interval: 30s
+  primary:
+    affinity: {}
+    args: []
+    command: []
+    configuration: |-
+      [mysqld]
+      skip-name-resolve
+      explicit_defaults_for_timestamp
+      basedir=/opt/bitnami/mariadb
+      plugin_dir=/opt/bitnami/mariadb/plugin
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      tmpdir=/opt/bitnami/mariadb/tmp
+      max_allowed_packet=16M
+      bind-address=0.0.0.0
+      pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+      log-error=/opt/bitnami/mariadb/logs/mysqld.log
+      character-set-server=UTF8
+      collation-server=utf8_general_ci
+
+      [client]
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      default-character-set=UTF8
+      plugin_dir=/opt/bitnami/mariadb/plugin
+
+      [manager]
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+    customLivenessProbe: {}
+    customReadinessProbe: {}
+    extraEnvVars: []
+    extraEnvVarsCM: ""
+    extraEnvVarsSecret: ""
+    extraFlags: ""
+    extraVolumeMounts: []
+    extraVolumes: []
+    hostAliases: []
+    initContainers: []
+    livenessProbe:
+      enabled: true
+      failureThreshold: 3
+      initialDelaySeconds: 120
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    nodeAffinityPreset:
+      key: ""
+      type: ""
+      values: []
+    nodeSelector: {}
+    pdb:
+      enabled: false
+      minAvailable: 1
+    persistence:
+      accessModes:
+      - ReadWriteOnce
+      annotations: {}
+      enabled: true
+      existingClaim: null
+      hostPath: null
+      selector: {}
+      size: 8Gi
+      storageClass: null
+    podAffinityPreset: ""
+    podAnnotations: {}
+    podAntiAffinityPreset: soft
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
+    priorityClassName: ""
+    readinessProbe:
+      enabled: true
+      failureThreshold: 3
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources:
+      limits: {}
+      requests: {}
+    service:
+      annotations: {}
+      clusterIP: ""
+      loadBalancerIP: ""
+      loadBalancerSourceRanges: []
+      nodePort: ""
+      port: 3306
+      type: ClusterIP
+    sidecars: []
+    tolerations: []
+    updateStrategy: RollingUpdate
+  rbac:
+    create: false
+  secondary:
+    affinity: {}
+    args: []
+    command: []
+    configuration: |-
+      [mysqld]
+      skip-name-resolve
+      explicit_defaults_for_timestamp
+      basedir=/opt/bitnami/mariadb
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      tmpdir=/opt/bitnami/mariadb/tmp
+      max_allowed_packet=16M
+      bind-address=0.0.0.0
+      pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+      log-error=/opt/bitnami/mariadb/logs/mysqld.log
+      character-set-server=UTF8
+      collation-server=utf8_general_ci
+
+      [client]
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      default-character-set=UTF8
+
+      [manager]
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+    customLivenessProbe: {}
+    customReadinessProbe: {}
+    extraEnvVars: []
+    extraEnvVarsCM: ""
+    extraEnvVarsSecret: ""
+    extraFlags: ""
+    extraVolumeMounts: []
+    extraVolumes: []
+    hostAliases: []
+    initContainers: []
+    livenessProbe:
+      enabled: true
+      failureThreshold: 3
+      initialDelaySeconds: 120
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    nodeAffinityPreset:
+      key: ""
+      type: ""
+      values: []
+    nodeSelector: {}
+    pdb:
+      enabled: false
+      minAvailable: 1
+    persistence:
+      accessModes:
+      - ReadWriteOnce
+      annotations: {}
+      enabled: true
+      selector: {}
+      size: 8Gi
+    podAffinityPreset: ""
+    podAnnotations: {}
+    podAntiAffinityPreset: soft
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
+    priorityClassName: ""
+    readinessProbe:
+      enabled: true
+      failureThreshold: 3
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    replicaCount: 1
+    resources:
+      limits: {}
+      requests: {}
+    service:
+      annotations: {}
+      clusterIP: ""
+      loadBalancerIP: ""
+      loadBalancerSourceRanges: []
+      nodePort: ""
+      port: 3306
+      type: ClusterIP
+    sidecars: []
+    tolerations: []
+    updateStrategy: RollingUpdate
+  serviceAccount:
+    annotations: {}
+    create: true
+  volumePermissions:
+    enabled: false
+    image:
+      pullPolicy: Always
+      registry: docker.io
+      repository: bitnami/minideb
+      tag: buster
+    resources: {}
+mediawikiEmail: user@example.com
+mediawikiName: My Wiki
+mediawikiUser: user
+metrics:
+  enabled: false
+  image:
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: bitnami/apache-exporter
+    tag: 0.8.0-debian-10-r302
+  podAnnotations:
+    prometheus.io/port: "9117"
+    prometheus.io/scrape: "true"
+  resources: {}
+nodeAffinityPreset:
+  key: ""
+  type: ""
+  values: []
+nodeSelector: {}
+persistence:
+  accessMode: ReadWriteOnce
+  enabled: true
+  size: 8Gi
+podAffinityPreset: ""
+podAnnotations: {}
+podAntiAffinityPreset: soft
+podLabels: {}
+podSecurityContext:
+  enabled: true
+  fsGroup: 1001
+readinessProbe:
+  enabled: true
+  failureThreshold: 6
+  httpGet:
+    httpHeaders:
+    - name: Host
+      value: '{{ include "mediawiki.host" . }}'
+    path: /api.php?action=query&meta=siteinfo&format=none
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+resources:
+  limits: {}
+  requests:
+    cpu: 300m
+    memory: 512Mi
+service:
+  externalTrafficPolicy: Cluster
+  nodePorts:
+    http: ""
+    https: ""
+  port: 80
+  type: LoadBalancer
+sidecars: {}
+tolerations: []
+updateStrategy:
+  type: RollingUpdate
+
+HOOKS:
+MANIFEST:
+---
+# Source: mediawiki/charts/mariadb/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mediawiks-mariadb
+  namespace: default
+  labels:
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-9.3.2
+    app.kubernetes.io/instance: mediawiks
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+---
+# Source: mediawiki/charts/mariadb/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mediawiks-mariadb
+  namespace: default
+  labels:
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-9.3.2
+    app.kubernetes.io/instance: mediawiks
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  mariadb-root-password: "bVc4WFpSZ1NsTA=="
+  mariadb-password: "UEFrZ3dFQjJ1Rg=="
+---
+# Source: mediawiki/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mediawiks-mediawiki
+  labels:
+    app.kubernetes.io/name: mediawiki
+    helm.sh/chart: mediawiki-12.2.1
+    app.kubernetes.io/instance: mediawiks
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  mediawiki-password: "ZEVXUnc4Y04wcQ=="
+---
+# Source: mediawiki/charts/mariadb/templates/primary/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mediawiks-mariadb
+  namespace: default
+  labels:
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-9.3.2
+    app.kubernetes.io/instance: mediawiks
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+data:
+  my.cnf: |-
+    [mysqld]
+    skip-name-resolve
+    explicit_defaults_for_timestamp
+    basedir=/opt/bitnami/mariadb
+    plugin_dir=/opt/bitnami/mariadb/plugin
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    tmpdir=/opt/bitnami/mariadb/tmp
+    max_allowed_packet=16M
+    bind-address=0.0.0.0
+    pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+    log-error=/opt/bitnami/mariadb/logs/mysqld.log
+    character-set-server=UTF8
+    collation-server=utf8_general_ci
+    
+    [client]
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    default-character-set=UTF8
+    plugin_dir=/opt/bitnami/mariadb/plugin
+    
+    [manager]
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+---
+# Source: mediawiki/templates/mediawiki-pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mediawiks-mediawiki-mediawiki
+  labels:
+    app.kubernetes.io/name: mediawiki
+    helm.sh/chart: mediawiki-12.2.1
+    app.kubernetes.io/instance: mediawiks
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "8Gi"
+---
+# Source: mediawiki/charts/mariadb/templates/primary/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mediawiks-mariadb
+  namespace: default
+  labels:
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-9.3.2
+    app.kubernetes.io/instance: mediawiks
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: mysql
+      port: 3306
+      protocol: TCP
+      targetPort: mysql
+      nodePort: null
+  selector: 
+    app.kubernetes.io/name: mariadb
+    app.kubernetes.io/instance: mediawiks
+    app.kubernetes.io/component: primary
+---
+# Source: mediawiki/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mediawiks-mediawiki
+  labels:
+    app.kubernetes.io/name: mediawiki
+    helm.sh/chart: mediawiki-12.2.1
+    app.kubernetes.io/instance: mediawiks
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: "Cluster"
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  selector: 
+    app.kubernetes.io/name: mediawiki
+    app.kubernetes.io/instance: mediawiks
+---
+# Source: mediawiki/charts/mariadb/templates/primary/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mediawiks-mariadb
+  namespace: default
+  labels:
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-9.3.2
+    app.kubernetes.io/instance: mediawiks
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app.kubernetes.io/name: mariadb
+      app.kubernetes.io/instance: mediawiks
+      app.kubernetes.io/component: primary
+  serviceName: mediawiks-mariadb
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/configuration: a5bbc7d3b663a22f2a510131287ca05d556b661bd89d01396f60cd536228348d
+      labels:
+        app.kubernetes.io/name: mariadb
+        helm.sh/chart: mariadb-9.3.2
+        app.kubernetes.io/instance: mediawiks
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: primary
+    spec:
+      
+      serviceAccountName: mediawiks-mariadb
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: mariadb
+                    app.kubernetes.io/instance: mediawiks
+                    app.kubernetes.io/component: primary
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+      containers:
+        - name: mariadb
+          image: docker.io/bitnami/mariadb:10.5.8-debian-10-r69
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsUser: 1001
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mediawiks-mariadb
+                  key: mariadb-root-password
+            - name: MARIADB_USER
+              value: "bn_mediawiki"
+            - name: MARIADB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mediawiks-mariadb
+                  key: mariadb-password
+            - name: MARIADB_DATABASE
+              value: "bitnami_mediawiki"
+          ports:
+            - name: mysql
+              containerPort: 3306
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - |
+                  password_aux="${MARIADB_ROOT_PASSWORD:-}"
+                  if [[ -f "${MARIADB_ROOT_PASSWORD_FILE:-}" ]]; then
+                      password_aux=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
+                  fi
+                  mysqladmin status -uroot -p"${password_aux}"
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - |
+                  password_aux="${MARIADB_ROOT_PASSWORD:-}"
+                  if [[ -f "${MARIADB_ROOT_PASSWORD_FILE:-}" ]]; then
+                      password_aux=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
+                  fi
+                  mysqladmin status -uroot -p"${password_aux}"
+          resources: 
+            limits: {}
+            requests: {}
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/mariadb
+            - name: config
+              mountPath: /opt/bitnami/mariadb/conf/my.cnf
+              subPath: my.cnf
+      volumes:
+        - name: config
+          configMap:
+            name: mediawiks-mariadb
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels: 
+          app.kubernetes.io/name: mariadb
+          app.kubernetes.io/instance: mediawiks
+          app.kubernetes.io/component: primary
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+
+NOTES:
+###############################################################################
+### ERROR: You did not provide an external host in your 'helm install' call ###
+###############################################################################
+
+This deployment will be incomplete until you configure Mediawiki with a resolvable
+host. To configure Mediawiki with the URL of your service:
+
+1. Get the Mediawiki URL by running:
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        Watch the status with: 'kubectl get svc --namespace default -w mediawiks-mediawiki'
+
+  export APP_HOST=$(kubectl get svc --namespace default mediawiks-mediawiki --template "{{ range (index .status.loadBalancer.ingress 0) }}{{ . }}{{ end }}")
+  export APP_PASSWORD=$(kubectl get secret --namespace default mediawiks-mediawiki -o jsonpath="{.data.mediawiki-password}" | base64 --decode)
+  export MARIADB_ROOT_PASSWORD=$(kubectl get secret --namespace default mediawiki-mariadb -o jsonpath="{.data.mariadb-root-password}" | base64 --decode)
+  export MARIADB_PASSWORD=$(kubectl get secret --namespace default mediawiki-mariadb -o jsonpath="{.data.mariadb-password}" | base64 --decode)
+
+2. Complete your Mediawiki deployment by running:
+
+  helm upgrade mediawiks bitnami/mediawiki \
+    --set mediawikiHost=$APP_HOST,mediawikiPassword=$APP_PASSWORD,mariadb.auth.rootPassword=$MARIADB_ROOT_PASSWORD,mariadb.auth.password=$MARIADB_PASSWORD
+
+2. Get your MediaWiki login credentials by running:
+
+    echo Username: user
+    echo Password: $(kubectl get secret --namespace default mediawiks-mediawiki -o jsonpath="{.data.mediawiki-password}" | base64 --decode)
