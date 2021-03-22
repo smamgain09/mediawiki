@@ -1,4 +1,4 @@
-Automated Deployment of Mediawiki using Helm and CloudBuild on GKE Cluster 
+**Automated Deployment of Mediawiki using Helm and CloudBuild on GKE Cluster **
 
 1. Connect to GKE created cluster
    > gcloud container clusters get-credentials saur-kube --zone us-central1-c --project winter-accord-276603
