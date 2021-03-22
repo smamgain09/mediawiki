@@ -1,6 +1,6 @@
 steps:
-- name: 'bash'
-  args: ['helm upgrade mediawiki .', '--debug']
+- name: 'gcr.io/cloud-builders/helm'
+  args: ['upgrade', 'mediawiks', '.', '--debug']
 
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
@@ -8,4 +8,4 @@ steps:
 options:
     machineType: 'N1_HIGHCPU_8'
 timeout: 660s
-tags: ['mytag1', 'mytag2']
+tags: ['env', 'demo']
